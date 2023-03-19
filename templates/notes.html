@@ -1,0 +1,19 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Notes
+{% endblock %}
+
+{% block main %}
+    <form action="/notes" method="post" class="form-inline">
+        <h2>Search for a Character</h2>
+        <div class="row justify-content-md-center">
+            <input autocomplete="off" autofocus class="form-control w-auto" id="query" name="query" placeholder="Search here" type="text">
+            <select class="form-select outline-secondary w-auto" id="type" name="type" placeholder="Select Type">
+                <option value="meaning">Meaning</option>
+                <option value=“character“>Character</option>
+            </select>
+            <button class="btn btn-outline-secondary w-auto" type="submit">Submit</button>
+        </div>
+    </form>
+{% endblock %}

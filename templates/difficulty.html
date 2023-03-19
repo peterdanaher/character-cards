@@ -1,0 +1,24 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Difficulty
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <form action="/difficulty" method="post">
+        <label for="difficulty_level">Difficulty level: </label>
+        <!-- I got the mx-auto w-auto from the trivia lab -->
+        <select name="difficulty_level" class="form-select mx-auto w-auto">
+            <option selected value="{{ level }}">{{ options[level] }}</option>
+            {% for i in range %}
+                {% if i != level %}
+                    <option value={{ i }}>{{ options[i] }}</option>
+                {% endif %}
+            {% endfor %}
+        </select>
+        <br>
+        <button class="btn btn-outline-secondary" type="submit">Submit</button>
+    </form>
+</div>
+{% endblock %}

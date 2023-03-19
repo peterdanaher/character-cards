@@ -1,0 +1,111 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Review
+{% endblock %}
+
+{% block javascript %}
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            let info = document.querySelector('.info');
+            // Loads character list into JavaScript
+            let j_characters = JSON.parse({{ j_characters | tojson }});
+            // Meaning of first character to check for quiz
+            let answer = j_characters.splice({{ start }}, 1)[0]['meaning'].toUpperCase();
+            // Initializes an array of possible indices in the character list
+            let range = [];
+            let length = {{ number_seen }} - 1;
+            for (let i = 0; i < length; i++) {
+                range[i] = i;
+            }
+            // Makes a sequence of random indices from the possible values. This will be the sequence in which characters are shown
+            let sequence = [];
+            for (let i = 0; i < {{ number }}; i++) {
+                sequence.push(range.splice(Math.floor(Math.random() * (length - i)), 1));
+            }
+
+            // Compares input to answer and reveals the information about the character
+            document.querySelector('#check').addEventListener('click', function() {
+                info.style.visibility = 'visible';
+                let input = document.querySelector('input');
+                if (input.value.toUpperCase() === answer) {
+                    input.style.backgroundColor = 'green';
+                }
+                else {
+                    input.style.backgroundColor = 'red';
+                }
+
+                if (sequence.length === 0) {
+                    document.querySelector('#home').style.visibility = 'visible';
+                }
+            });
+            // Resets the input field, hides the information, and changes it to the next character in the sequence
+            document.querySelector('#next').addEventListener('click', function() {
+                info.style.visibility = 'hidden';
+                let character = document.querySelector('#character');
+                let pronunciation = document.querySelector('#pronunciation');
+                let meaning = document.querySelector('#meaning');
+                let note = document.querySelector('#note');
+                let index = sequence.shift();
+
+                character.innerHTML = j_characters[index]['character'];
+                pronunciation.innerHTML = 'Pronunciation ' + j_characters[index]['pronunciation'];
+                meaning.innerHTML = 'Meaning: ' + j_characters[index]['meaning'];
+                answer = j_characters[index]['meaning'].toUpperCase();
+                document.querySelector('input').style.backgroundColor = '#fff';
+                document.querySelector('input').value = '';
+                if (j_characters[index]['note'] === null) {
+                    note.innerHTML = 'Note: None'
+                }
+                else {
+                    note.innerHTML = 'Note: ' + j_characters[index]['note'];
+                }
+            });
+        });
+    </script>
+{% endblock %}
+
+{% block main %}
+<div class="container">
+    <div class="section">
+        <h1 id="character">
+            {{ characters[start]["character"] }}
+        </h1>
+    </div>
+    <!-- https://getbootstrap.com/docs/4.3/components/forms/ This is where I learned how to make forms -->
+    <div class="section">
+            <div class="form-group">
+                <div class="row">
+                    <div class="col-sm"></div>
+                    <div class="col-sm">
+                        <input class="form-control" type="text" placeholder="Enter meaning">
+                    </div>
+                    <div class="col-sm"></div>
+                </div>
+                <br>
+                <button class="btn btn-outline-secondary" id="check" >Check Answer</button>
+                <button class="btn btn-outline-secondary" id="next">Next Character</button>
+                <div class="info">
+                    <br>
+                    <div id="pronunciation">
+                        Pronunciation: {{ characters[start]["pronunciation"] }}
+                    </div>
+                    <br>
+                    <div id="meaning">
+                        Meaning: {{ characters[start]["meaning"] }}
+                    </div>
+                    <br>
+                    <div id="note">
+                        Note: {{ characters[start]["note"] }}
+                    </div>
+                </div>
+            </div>
+    </div>
+    <br>
+    <div class="section" id="home">
+        <form action="/" method="GET">
+            <button class="btn btn-primary" type="submit">Return Home</button>
+        </form>
+    </div>
+</div>
+{% endblock %}

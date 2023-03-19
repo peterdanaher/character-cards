@@ -1,0 +1,39 @@
+{% extends "layout.html" %}
+
+{% block title %}
+    Add Note
+{% endblock %}
+
+{% block main %}
+    <div class="container">
+        <div class="section">
+            <h1 id="character">
+                {{ character["character"] }}
+            </h1>
+        </div>
+
+        <div class="section">
+            <div class="new_info">
+                <br>
+                <div id="pronunciation">
+                    Pronunciation: {{ character["pronunciation"] }}
+                </div>
+                <div id="meaning">
+                    Meaning: {{ character["meaning"] }}
+                </div>
+            </div>
+        </div>
+        <br>
+        <div class="section" style="font-size: 20px">
+            <form action="/add_note" method="POST">
+                <div class="form-group">
+                    <label for="note">New note:</label>
+                    <textarea class="form-control mx-auto w-auto" id="note" name="note" rows="2"></textarea>
+                </div>
+                <br>
+                <button class="btn btn-primary " type="submit">Add Note</button>
+                <input type="hidden" name="character_id" value={{ character["id"] }}>
+            </form>
+        </div>
+    </div>
+{% endblock %}

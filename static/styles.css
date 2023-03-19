@@ -1,0 +1,33 @@
+
+nav .navbar-brand
+{
+    font-size: xx-large;
+}
+
+/* Colors for brand */
+nav .navbar-brand .red
+{
+    color: #ea433b;
+}
+
+.info {
+    visibility: hidden;
+    font-size: 20px;
+}
+
+#home {
+    visibility: hidden;
+    font-size: 20px;
+}
+
+.new_info {
+    font-size: 24px;
+}
+
+#next {
+    font-size: 20px;
+}
+
+#check {
+    font-size: 20px;
+}
